@@ -1,0 +1,9 @@
+﻿@model HairMateApp.Application.ViewModels.ProfileUser.UploadProfilePictureViewModel
+
+<form asp-action="UploadProfilePicture" enctype="multipart/form-data" method="post">
+    <div class="form-group">
+        <label for="File">Upload Profile Picture</label>
+        <input type="file" class="form-control" asp-for="File" />
+    </div>
+    <button type="submit" class="btn btn-primary">Upload</button>
+</form>

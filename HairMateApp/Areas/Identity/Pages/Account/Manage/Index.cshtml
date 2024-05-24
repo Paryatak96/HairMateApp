@@ -1,0 +1,53 @@
+﻿@page
+@model HairMateApp.Areas.Identity.Pages.Account.Manage.IndexModel
+@{
+    ViewData["Title"] = "Profile";
+    ViewData["ActivePage"] = ManageNavPages.Index;
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/custom.css" />
+}
+
+<h3 class="text-center mt-4">@ViewData["Title"]</h3>
+<partial name="_StatusMessage" for="StatusMessage" />
+<div class="row justify-content-center mt-5">
+    <div class="col-md-6">
+        <div class="card shadow-sm">
+            <div class="card-header text-center">
+                <h4>Profile Information</h4>
+            </div>
+            <div class="card-body">
+                <form id="profile-form" method="post" enctype="multipart/form-data">
+                    <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+                    <div class="form-floating mb-3">
+                        <input asp-for="Input.FirstName" class="form-control" />
+                        <label asp-for="Input.FirstName" class="form-label">First Name</label>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <input asp-for="Input.LastName" class="form-control" />
+                        <label asp-for="Input.LastName" class="form-label">Last Name</label>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <input asp-for="Username" class="form-control" disabled />
+                        <label asp-for="Username" class="form-label">Email</label>
+                    </div>
+                    @if (!string.IsNullOrEmpty(Model.Input.ProfilePicture))
+                    {
+                        <div class="form-group text-center mb-3">
+                            <img src="@Model.Input.ProfilePicture" alt="Profile Picture" class="img-thumbnail" style="max-width: 150px; border-radius: 50%;" />
+                        </div>
+                    }
+                    <div class="d-flex justify-content-between">
+                        <a asp-controller="Profile" asp-action="UploadProfilePicture" class="btn btn-secondary">Upload Picture</a>
+                        <button id="update-profile-button" type="submit" class="btn btn-primary">Save</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

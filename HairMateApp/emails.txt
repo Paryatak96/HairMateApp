@@ -1,0 +1,12 @@
+To: Sebastian.Liszewski@outlook.com
+Subject: Confirm your email
+Message: Please confirm your account by <a href='https://localhost:7201/?area=Identity&amp;userId=71e2313e-99e8-420e-b00e-1de46fef9279&amp;code=Q2ZESjhMTHJzZXluNUxSRGtreEdRMVQ4eVVITlFtQ00vbnFpZVByQjVscVdHdTJCbXR6VkMxMXlJcnRzMmlmZE9rUUZRSDBCa3Nuc29reGhVRnhrY1JyQTdVV3JTZDVudnIxOE81S01JdEZiYXQ2RUo1ajF5aktmUTRDblN6TlNlUS9lRkFibE12bmhiMDBxYXZxVWgwbk5HVFVQZFJWbmR6a1dCL3Bzem9tY2V5cnFBUmhPdkx5cWY5cStSTFNPd09WTTYyZzJQczNPNWdwNEVLNzZqYVZ5bnN1dVlDTW54aVoxZ25HZmZJOGl6dWdIamZ4Q0xvVDN0ZU4wWGxHVGFHT3ViQT09&amp;returnUrl=%2F&amp;page=%2FAccount%2FConfirmEmail'>clicking here</a>.
+
+To: Test@interia.pl
+Subject: Confirm your email
+Message: Please confirm your account by <a href='https://localhost:7201/?area=Identity&amp;userId=4780d636-d325-448f-9ea1-c22a058589e2&amp;code=Q2ZESjhMTHJzZXluNUxSRGtreEdRMVQ4eVVIMGpZM09IbWJJT05xYzF6ajFkUWM3THNPWmhwaEt2aEczTGo0akpKamJaaHVYWmpnSHNQbDFZRkRjU3pEdW5DTkZmMkpPTGs0YzlKM25pRFR1N0dpK0xFK0hBRHk3SXVvK0hFdGMvSGwyQjRnaHZVQ0dxdkxUV0I3NDFaTFJzTmZoVElnVklkSERnbnpkU1NzQnVRc1RCbWE3bWJSbCtpTHNYUG9VKzR0bngrMXUrWCsxUHdYYUhpakVoUWxCSjFXS3ltL1E5VXN6SnZlWXMxTWp3RE9vR3VDNGdvakZiR2wzd1ZGUlloemJlZz09&amp;returnUrl=%2F&amp;page=%2FAccount%2FConfirmEmail'>clicking here</a>.
+
+To: TestTest@interia.pl
+Subject: Confirm your email
+Message: Please confirm your account by <a href='https://localhost:7201/?area=Identity&amp;userId=7a2f250d-21c5-4284-9efd-c3113bfae578&amp;code=Q2ZESjhMTHJzZXluNUxSRGtreEdRMVQ4eVVFL2JTVlhxaUo0S2NxOERQQXMreWtzbGp1RVB1czNMRGE5bzlhZjVMbC9mY1pFdG5SZU9zOU1zby9uM3d3NjhwbUJLNHJxdkVQZWV5STF2K3pvY2IwejE1VkhSV1ErQm9HbHdyelJlY2RtRjMycnFBWVFRQlhmcExGdjRTN3RxVWZnMWR2dkVvcm8rcUlFRDJldGlCc0t3NnVvbXp2RXpPRUFBK01KNTdCQjE0RnQwaXlGajU0SlUwdkl0bVBaSHJvSDhhQ3RMS3JQVGdDSnJOQTVaOVNidU81cnBMM2JSNkNxenhVR2ZsQ2xlUT09&amp;returnUrl=%2F&amp;page=%2FAccount%2FConfirmEmail'>clicking here</a>.
+

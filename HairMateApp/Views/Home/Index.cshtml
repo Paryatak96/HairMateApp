@@ -1,0 +1,14 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Welcome to HairMateApp!</h1>
+    <p>Manage and view salons easily</p>
+    @if (User.Identity.IsAuthenticated)
+    {
+        <a href="@Url.Action("Create", "Salon")" class="btn btn-primary">Create a Salon</a>
+        <a href="@Url.Action("BookedAppointments", "Salon")" class="btn btn-info">My Booked Appointments</a>
+    }
+    <a href="@Url.Action("Index", "Salon")" class="btn btn-secondary">View Salons</a>
+</div>

@@ -1,0 +1,135 @@
+﻿@model IEnumerable<HairMateApp.Domain.Model.Appointment>
+
+<h2 class="mb-4">Booked Appointments</h2>
+
+<table class="table table-hover shadow-sm rounded bg-light">
+    <thead class="table-dark">
+        <tr>
+            <th>Date</th>
+            <th>Time</th>
+            <th>City</th>
+            <th>Street</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var appointment in Model.Where(a => a.Status == "Booked"))
+        {
+            <tr>
+                <td>@appointment.Date.ToShortDateString()</td>
+                <td>@appointment.Time</td>
+                <td>@appointment.Salon.City</td>
+                <td>@appointment.Salon.Street</td>
+                <td class="d-flex">
+                    <form asp-action="CancelAppointment" method="post" class="me-2">
+                        <input type="hidden" name="appointmentId" value="@appointment.Id" />
+                        <button type="submit" class="btn btn-danger">Cancel</button>
+                    </form>
+                    <form asp-action="RescheduleAppointment" method="post" class="d-flex align-items-center">
+                        <input type="hidden" name="appointmentId" value="@appointment.Id" />
+                        <input type="date" name="newDate" required class="form-control form-control-sm me-2" />
+                        <input type="time" name="newTime" required class="form-control form-control-sm me-2" />
+                        <button type="submit" class="btn btn-warning">Reschedule</button>
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<h2 class="mb-4 mt-5">Completed Appointments</h2>
+
+<table class="table table-hover shadow-sm rounded bg-light">
+    <thead class="table-dark">
+        <tr>
+            <th>Date</th>
+            <th>Time</th>
+            <th>City</th>
+            <th>Street</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var appointment in Model.Where(a => a.Status == "Completed"))
+        {
+            <tr>
+                <td>@appointment.Date.ToShortDateString()</td>
+                <td>@appointment.Time</td>
+                <td>@appointment.Salon.City</td>
+                <td>@appointment.Salon.Street</td>
+                <td>
+                    <form asp-action="BookAppointment" method="post">
+                        <input type="hidden" name="appointmentId" value="@appointment.Id" />
+                        <button type="submit" class="btn btn-primary">Book Again</button>
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<style>
+    body {
+        background-color: #f7f9fc;
+    }
+
+    h2 {
+        color: #343a40;
+    }
+
+    .table-hover tbody tr:hover {
+        background-color: #f1f1f1;
+    }
+
+    .table-dark th {
+        background-color: #343a40;
+        color: #fff;
+    }
+
+    .btn-primary, .btn-danger, .btn-warning {
+        transition: background-color 0.3s, border-color 0.3s;
+    }
+
+        .btn-primary:hover {
+            background-color: #0056b3;
+            border-color: #004085;
+        }
+
+        .btn-danger:hover {
+            background-color: #c82333;
+            border-color: #bd2130;
+        }
+
+        .btn-warning:hover {
+            background-color: #e0a800;
+            border-color: #d39e00;
+        }
+
+    .shadow-sm {
+        box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075) !important;
+    }
+
+    .rounded {
+        border-radius: 0.25rem !important;
+    }
+
+    .bg-light {
+        background-color: #fff !important;
+    }
+
+    .d-flex {
+        display: flex !important;
+    }
+
+    .align-items-center {
+        align-items: center !important;
+    }
+
+    .me-2 {
+        margin-right: 0.5rem !important;
+    }
+
+    .mt-5 {
+        margin-top: 3rem !important;
+    }
+</style>

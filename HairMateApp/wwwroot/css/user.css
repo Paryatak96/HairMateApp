@@ -1,0 +1,38 @@
+﻿body {
+    background-color: #f0f2f5;
+}
+
+.card {
+    border-radius: 15px;
+    border: none;
+}
+
+.card-header {
+    background-color: #4e73df;
+    color: #fff;
+    border-radius: 15px 15px 0 0;
+}
+
+.form-floating .form-control {
+    border-radius: 10px;
+}
+
+.form-floating label {
+    color: #4e73df;
+}
+
+.form-group img {
+    border: 2px solid #4e73df;
+}
+
+.btn-primary {
+    background-color: #4e73df;
+    border: none;
+    border-radius: 10px;
+}
+
+.btn-secondary {
+    background-color: #858796;
+    border: none;
+    border-radius: 10px;
+}
