@@ -114,6 +114,76 @@ public class SalonServiceTests
         Assert.NotNull(service2);
         Assert.Equal(20, service1.Price);
         Assert.Equal(15, service2.Price);
-
     }
+
+    [Fact]
+    public async Task UpdateSalonAsync_UpdatesSalon()
+    {
+        // Arrange
+        var salonId = 2;
+        var salon = new Salon
+        {
+            SalonId = salonId,
+            Name = "Salon to Update",
+            Description = "Initial Description",
+            LogoUrl = "/path/to/logo.png",
+            Type = "Male",
+            Province = "Update Province",
+            City = "Update City",
+            Street = "Update Street",
+            PostalCode = "54321",
+            PaymentType = "Card",
+            Reviews = new List<Review>
+            {
+                new Review { Rating = 4, UserId = "1", UserName = "User1" },
+                new Review { Rating = 5, UserId = "2", UserName = "User2" }
+            },
+            Services = new List<Service>
+            {
+                new Service { Name = "Haircut", Price = 20, ServiceType = "Strzyżenie"},
+                new Service { Name = "Shave", Price = 15, ServiceType = "Golenie" }
+            },
+            Appointments = new List<Appointment>
+            {
+                new Appointment
+                {
+                    SalonId = 1,
+                    Date = DateTime.Now.AddDays(1),
+                    Time = new TimeSpan(10, 0, 0), // 10:00 AM
+                    Status = "Booked"
+                },
+                new Appointment
+                {
+                    SalonId = 1,
+                    Date = DateTime.Now.AddDays(2),
+                    Time = new TimeSpan(11, 0, 0), // 11:00 AM
+                    Status = "Booked"
+                }
+            }  
+        };
+
+        using (var context = new Context(_dbContextOptions))
+        {
+            context.Salons.Add(salon);
+            context.SaveChanges();
+        }
+
+        // Act
+        using (var context = new Context(_dbContextOptions))
+        {
+            var service = new SalonService(_salonRepositoryMock.Object, _mapper, context, _userManagerMock.Object);
+            salon.Description = "Updated Description";
+            var success = await service.UpdateSalonAsync(salon);
+            Assert.True(success);
+        }
+
+        // Assert
+        using (var context = new Context(_dbContextOptions))
+        {
+            var result = await context.Salons.FirstOrDefaultAsync(s => s.SalonId == 2);
+            Assert.NotNull(result);
+            Assert.Equal("Updated Description", result.Description);
+        }
+    }
+
 }

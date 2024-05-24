@@ -142,28 +142,6 @@ namespace HairMateApp.Infrastructure.Repository
                 .FirstOrDefaultAsync(a => a.Id == appointmentId);
         }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
         public async Task<List<Salon>> GetSalonsByRegionAndGenderAsync(string region, string gender)
         {
             return await _context.Salons

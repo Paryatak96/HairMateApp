@@ -292,7 +292,7 @@ namespace HairMateApp.Controllers
             return RedirectToAction("Details", new { id = model.SalonId });
         }
 
-        [Authorize(Roles = "Admin")]
+        //[Authorize(Roles = "Admin")]
         [HttpGet]
         public async Task<IActionResult> Edit(int id)
         {
@@ -319,7 +319,7 @@ namespace HairMateApp.Controllers
             return View(model);
         }
 
-        [Authorize(Roles = "Admin")]
+        //[Authorize(Roles = "Admin")]
         [HttpPost]
         public async Task<IActionResult> Edit(NewSalonVm model)
         {
