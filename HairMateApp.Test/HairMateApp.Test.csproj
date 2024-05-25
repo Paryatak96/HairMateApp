@@ -23,6 +23,7 @@
     <ProjectReference Include="..\HairMateApp.Application\HairMateApp.Application.csproj" />
     <ProjectReference Include="..\HairMateApp.Domain\HairMateApp.Domain.csproj" />
     <ProjectReference Include="..\HairMateApp.Infrastructure\HairMateApp.Infrastructure.csproj" />
+    <ProjectReference Include="..\HairMateApp\HairMateApp.csproj" />
   </ItemGroup>
 
   <ItemGroup>

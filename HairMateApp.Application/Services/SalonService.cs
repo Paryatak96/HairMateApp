@@ -52,6 +52,8 @@ namespace HairMateApp.Application.Services
             return await _context.Salons
                 .Include(s => s.Reviews) // Upewnij się, że ładowane są recenzje
                 .Include(s => s.Services) // Upewnij się, że ładowane są usługi
+                .Include(s => s.Appointments)
+                .ThenInclude(a => a.User)
                 .FirstOrDefaultAsync(s => s.SalonId == salonId);
         }
 

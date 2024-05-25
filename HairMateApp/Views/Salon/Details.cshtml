@@ -71,11 +71,6 @@
         <a href="@Url.Action("Edit", "Salon", new { id = Model.SalonId })" class="btn btn-warning mt-3">Edit</a>
     }
 
-    @if (Model.CanManage)
-    {
-        <a href="@Url.Action("Manage", "Salon", new { id = Model.SalonId })" class="btn btn-secondary mt-3">Manage</a>
-    }
-
     @if (User.IsInRole("admin"))
     {
         <form asp-action="Delete" method="post" class="mt-3">

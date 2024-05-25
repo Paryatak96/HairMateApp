@@ -154,6 +154,7 @@ namespace HairMateApp.Controllers
             return View(model);
         }
 
+        [Authorize(Roles = "Employee, Admin")]
         [HttpPost]
         public async Task<IActionResult> AddService(int salonId, string name, decimal price, string serviceType)
         {
@@ -183,7 +184,7 @@ namespace HairMateApp.Controllers
             var user = await _userManager.GetUserAsync(User);
             if (user == null)
             {
-                return RedirectToAction("Login", "IdentityAccount");
+                return Redirect("https://localhost:7201/Identity/Account/Login");
             }
 
             var appointment = new Appointment
@@ -222,7 +223,7 @@ namespace HairMateApp.Controllers
                 // Handle error
             }
 
-            return RedirectToAction("BookedAppointments");
+            return RedirectToAction("Index");
         }
 
         [HttpPost]
@@ -270,7 +271,7 @@ namespace HairMateApp.Controllers
             var user = await _userManager.GetUserAsync(User);
             if (user == null)
             {
-                return RedirectToAction("Login", "Account");
+                return Redirect("https://localhost:7201/Identity/Account/Login");
             }
 
             var review = new Review
@@ -292,7 +293,7 @@ namespace HairMateApp.Controllers
             return RedirectToAction("Details", new { id = model.SalonId });
         }
 
-        //[Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin")]
         [HttpGet]
         public async Task<IActionResult> Edit(int id)
         {
@@ -319,7 +320,7 @@ namespace HairMateApp.Controllers
             return View(model);
         }
 
-        //[Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public async Task<IActionResult> Edit(NewSalonVm model)
         {
@@ -364,7 +365,7 @@ namespace HairMateApp.Controllers
             return RedirectToAction("Index");
         }
 
-        [Authorize(Roles = "Employee")]
+        [Authorize(Roles = "Employee, Admin")]
         [HttpGet]
         public async Task<IActionResult> Appointments(int salonId)
         {
@@ -374,18 +375,20 @@ namespace HairMateApp.Controllers
                 return NotFound();
             }
 
-            var appointments = await _salonService.GetAppointmentsBySalonIdAsync(salonId);
+            var appointments = (salon.Appointments ?? new List<Appointment>()).Select(a => new AppointmentVm
+            {
+                AppointmentId = a.Id,
+                Date = a.Date,
+                Time = a.Time,
+                Status = a.Status,
+                ClientFirstName = a.User?.FirstName,
+                ClientLastName = a.User?.LastName
+            }).ToList();
+
             var model = new SalonAppointmentsVm
             {
-                SalonId = salon.SalonId,
                 SalonName = salon.Name,
-                Appointments = appointments.Select(a => new AppointmentVm
-                {
-                    AppointmentId = a.Id,
-                    Date = a.Date,
-                    Time = a.Time,
-                    Status = a.Status
-                }).ToList()
+                Appointments = appointments
             };
 
             return View(model);

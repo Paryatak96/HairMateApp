@@ -176,7 +176,7 @@ namespace HairMateApp.Infrastructure.Repository
             }
 
             appointment.Status = "Cancelled";
-            _context.Appointments.Update(appointment);
+            _context.Appointments.Remove(appointment);
             return await _context.SaveChangesAsync() > 0;
         }
 

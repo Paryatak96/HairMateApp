@@ -1,14 +1,18 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using AutoMapper;
 using HairMateApp.Application.Interfaces;
 using HairMateApp.Application.Services;
 using HairMateApp.Application.ViewModels.Salon;
+using HairMateApp.Controllers;
 using HairMateApp.Domain.Interface;
 using HairMateApp.Domain.Model;
 using HairMateApp.Infrastructure;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Moq;
 using Xunit;
@@ -16,10 +20,12 @@ using Xunit;
 public class SalonServiceTests
 {
     private readonly Mock<ISalonRepository> _salonRepositoryMock;
+    private readonly Mock<ISalonService> _salonServiceMock;
     private readonly DbContextOptions<Context> _dbContextOptions;
     private readonly Mock<UserManager<ApplicationUser>> _userManagerMock;
     private readonly IMapper _mapper;
     private readonly ISalonService _salonService;
+    private readonly SalonController _controller;
 
     public SalonServiceTests()
     {
@@ -38,6 +44,21 @@ public class SalonServiceTests
         _mapper = config.CreateMapper();
         var context = new Context(_dbContextOptions);
         _salonService = new SalonService(_salonRepositoryMock.Object, _mapper, context, _userManagerMock.Object);
+        _salonServiceMock = new Mock<ISalonService>();
+
+        _controller = new SalonController(_salonServiceMock.Object, _salonRepositoryMock.Object, _userManagerMock.Object)
+        {
+            ControllerContext = new ControllerContext
+            {
+                HttpContext = new DefaultHttpContext
+                {
+                    User = new ClaimsPrincipal(new ClaimsIdentity(new Claim[]
+            {
+                        new Claim(ClaimTypes.NameIdentifier, "1")
+            }, "mock"))
+                }
+            }
+        };
     }
 
     [Fact]
@@ -117,22 +138,21 @@ public class SalonServiceTests
     }
 
     [Fact]
-    public async Task UpdateSalonAsync_UpdatesSalon()
+    public async Task Details_ReturnsViewResult_WithSalonDetailsVm()
     {
         // Arrange
-        var salonId = 2;
         var salon = new Salon
         {
-            SalonId = salonId,
-            Name = "Salon to Update",
-            Description = "Initial Description",
+            SalonId = 1,
+            Name = "Test Salon",
+            Description = "Test Description",
             LogoUrl = "/path/to/logo.png",
             Type = "Male",
-            Province = "Update Province",
-            City = "Update City",
-            Street = "Update Street",
-            PostalCode = "54321",
-            PaymentType = "Card",
+            Province = "Test Province",
+            City = "Test City",
+            Street = "Test Street",
+            PostalCode = "12345",
+            PaymentType = "Cash",
             Reviews = new List<Review>
             {
                 new Review { Rating = 4, UserId = "1", UserName = "User1" },
@@ -157,33 +177,36 @@ public class SalonServiceTests
                     SalonId = 1,
                     Date = DateTime.Now.AddDays(2),
                     Time = new TimeSpan(11, 0, 0), // 11:00 AM
-                    Status = "Booked"
+                    Status = "Available"
                 }
-            }  
+            }
         };
 
-        using (var context = new Context(_dbContextOptions))
-        {
-            context.Salons.Add(salon);
-            context.SaveChanges();
-        }
+        _salonServiceMock.Setup(s => s.GetSalonByIdAsync(It.IsAny<int>())).ReturnsAsync(salon);
+
+        var user = new ApplicationUser { Id = "1" };
+        _userManagerMock.Setup(u => u.GetUserAsync(It.IsAny<ClaimsPrincipal>())).ReturnsAsync(user);
+        _userManagerMock.Setup(u => u.IsInRoleAsync(user, "Admin")).ReturnsAsync(true);
+        _userManagerMock.Setup(u => u.IsInRoleAsync(user, "Employee")).ReturnsAsync(false);
 
         // Act
-        using (var context = new Context(_dbContextOptions))
-        {
-            var service = new SalonService(_salonRepositoryMock.Object, _mapper, context, _userManagerMock.Object);
-            salon.Description = "Updated Description";
-            var success = await service.UpdateSalonAsync(salon);
-            Assert.True(success);
-        }
+        var result = await _controller.Details(1);
 
         // Assert
-        using (var context = new Context(_dbContextOptions))
-        {
-            var result = await context.Salons.FirstOrDefaultAsync(s => s.SalonId == 2);
-            Assert.NotNull(result);
-            Assert.Equal("Updated Description", result.Description);
-        }
+        var viewResult = Assert.IsType<ViewResult>(result);
+        var model = Assert.IsAssignableFrom<SalonDetailsVm>(viewResult.Model);
+        Assert.Equal(1, model.SalonId);
+        Assert.Equal("Test Salon", model.Name);
+        Assert.Equal("Test Description", model.Description);
+        Assert.Equal("Test Province", model.Province);
+        Assert.Equal("Test City", model.City);
+        Assert.Equal("Test Street", model.Street);
+        Assert.Equal("12345", model.PostalCode);
+        Assert.Equal("Cash", model.PaymentType);
+        Assert.Equal(2, model.Reviews.Count);
+        Assert.Equal(2, model.Services.Count);
+        Assert.True(model.CanEdit);
+        Assert.False(model.CanManage);
+        Assert.Equal(4.5m, model.AverageRating);
     }
-
 }
