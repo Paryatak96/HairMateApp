@@ -29,8 +29,8 @@
                         <label asp-for="Input.LastName" class="form-label">Last Name</label>
                     </div>
                     <div class="form-floating mb-3">
-                        <input asp-for="Username" class="form-control" disabled />
-                        <label asp-for="Username" class="form-label">Email</label>
+                        <input asp-for="Input.Email" class="form-control" disabled />
+                        <label asp-for="Input.Email" class="form-label">Email</label>
                     </div>
                     @if (!string.IsNullOrEmpty(Model.Input.ProfilePicture))
                     {
@@ -41,6 +41,56 @@
                     <div class="d-flex justify-content-between">
                         <a asp-controller="Profile" asp-action="UploadProfilePicture" class="btn btn-secondary">Upload Picture</a>
                         <button id="update-profile-button" type="submit" class="btn btn-primary">Save</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Change Email Section -->
+        <div class="card shadow-sm mt-4">
+            <div class="card-header text-center">
+                <h4>Change Email</h4>
+            </div>
+            <div class="card-body">
+                <form id="change-email-form" method="post" asp-page-handler="ChangeEmail">
+                    <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+                    <div class="form-floating mb-3">
+                        <input asp-for="Input.NewEmail" class="form-control" />
+                        <label asp-for="Input.NewEmail" class="form-label">New Email</label>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <input asp-for="Input.CurrentPassword" class="form-control" type="password" />
+                        <label asp-for="Input.CurrentPassword" class="form-label">Current Password</label>
+                    </div>
+                    <div class="d-flex justify-content-between">
+                        <button id="change-email-button" type="submit" class="btn btn-primary">Change Email</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Change Password Section -->
+        <div class="card shadow-sm mt-4">
+            <div class="card-header text-center">
+                <h4>Change Password</h4>
+            </div>
+            <div class="card-body">
+                <form id="change-password-form" method="post" asp-page-handler="ChangePassword">
+                    <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+                    <div class="form-floating mb-3">
+                        <input asp-for="Input.OldPassword" class="form-control" type="password" />
+                        <label asp-for="Input.OldPassword" class="form-label">Current Password</label>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <input asp-for="Input.NewPassword" class="form-control" type="password" />
+                        <label asp-for="Input.NewPassword" class="form-label">New Password</label>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <input asp-for="Input.ConfirmPassword" class="form-control" type="password" />
+                        <label asp-for="Input.ConfirmPassword" class="form-label">Confirm New Password</label>
+                    </div>
+                    <div class="d-flex justify-content-between">
+                        <button id="change-password-button" type="submit" class="btn btn-primary">Change Password</button>
                     </div>
                 </form>
             </div>

@@ -33,6 +33,8 @@ namespace HairMateApp.Controllers
             if (User.Identity.IsAuthenticated)
             {
                 var user = await _userManager.GetUserAsync(User);
+                ViewBag.FullName = $"{user.FirstName} {user.LastName}";
+
                 var userGender = user.Gender;
                 var userRegion = user.Region;
 
@@ -77,14 +79,18 @@ namespace HairMateApp.Controllers
         }
 
         [HttpGet]
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
+            var user = await _userManager.GetUserAsync(User);
+            ViewBag.FullName = $"{user.FirstName} {user.LastName}";
             return View(new NewSalonVm());
         }
 
         [HttpPost]
         public async Task<IActionResult> Create(NewSalonVm model)
         {
+
+
             if (true)
             {
                 if (model.SalonLogo != null && model.SalonLogo.Length > 0)
@@ -122,13 +128,16 @@ namespace HairMateApp.Controllers
         [HttpGet]
         public async Task<IActionResult> Details(int id)
         {
+            var user = await _userManager.GetUserAsync(User);
+            ViewBag.FullName = $"{user.FirstName} {user.LastName}";
+
             var salon = await _salonService.GetSalonByIdAsync(id);
             if (salon == null)
             {
                 return NotFound();
             }
 
-            var user = await _userManager.GetUserAsync(User);
+            user = await _userManager.GetUserAsync(User);
             var canEdit = user != null && await _userManager.IsInRoleAsync(user, "Admin");
             var canManage = user != null && await _userManager.IsInRoleAsync(user, "Employee");
 
@@ -154,7 +163,7 @@ namespace HairMateApp.Controllers
             return View(model);
         }
 
-        [Authorize(Roles = "Employee, Admin")]
+        [Authorize(Roles = "Employee")]
         [HttpPost]
         public async Task<IActionResult> AddService(int salonId, string name, decimal price, string serviceType)
         {
@@ -210,6 +219,7 @@ namespace HairMateApp.Controllers
         public async Task<IActionResult> BookedAppointments()
         {
             var user = await _userManager.GetUserAsync(User);
+            ViewBag.FullName = $"{user.FirstName} {user.LastName}";
             var appointments = await _salonService.GetBookedAppointmentsAsync(user.Id);
             return View(appointments);
         }
@@ -253,6 +263,8 @@ namespace HairMateApp.Controllers
         [HttpGet]
         public async Task<IActionResult> AddReview(int salonId)
         {
+            var user = await _userManager.GetUserAsync(User);
+            ViewBag.FullName = $"{user.FirstName} {user.LastName}";
             var model = new AddReviewVm
             {
                 SalonId = salonId
@@ -297,6 +309,8 @@ namespace HairMateApp.Controllers
         [HttpGet]
         public async Task<IActionResult> Edit(int id)
         {
+            var user = await _userManager.GetUserAsync(User);
+            ViewBag.FullName = $"{user.FirstName} {user.LastName}";
             var salon = await _salonService.GetSalonByIdAsync(id);
             if (salon == null)
             {
@@ -365,10 +379,12 @@ namespace HairMateApp.Controllers
             return RedirectToAction("Index");
         }
 
-        [Authorize(Roles = "Employee, Admin")]
+        [Authorize(Roles = "Employee")]
         [HttpGet]
         public async Task<IActionResult> Appointments(int salonId)
         {
+            var user = await _userManager.GetUserAsync(User);
+            ViewBag.FullName = $"{user.FirstName} {user.LastName}";
             var salon = await _salonService.GetSalonByIdAsync(salonId);
             if (salon == null)
             {

@@ -56,7 +56,7 @@
         @for (int i = 1; i <= Math.Ceiling((double)Model.Count / Model.PageSize); i++)
         {
             <li class="page-item @(i == Model.CurrentPage ? "active" : "")">
-                <a class="page-link" asp-action="Index" asp-route-pageNo="@i" asp-route-pageSize="@Model.PageSize" asp-route-searchString="@Model.SearchString">@i</a>
+                <a class="page-link" asp-action="Index" asp-route-pageNo="@i" asp-route-pageSize="@Model.PageSize" asp-route-searchString="@Model.SearchString" asp-route-salonGender="@(ViewData["SelectedGender"]?.ToString())">@i</a>
             </li>
         }
     </ul>

@@ -59,13 +59,32 @@ namespace HairMateApp.Areas.Identity.Pages.Account.Manage
             [Display(Name = "Phone number")]
             public string PhoneNumber { get; set; }
 
-            public string ProfilePicture { get; set; } // Dodaj tę linię
+            public string ProfilePicture { get; set; } 
 
             public string FirstName { get; set; }
             public string LastName { get; set; }
 
             [BindProperty]
-            public IFormFile ProfilePictureFile { get; set; } // Dodaj tę linię
+            public IFormFile ProfilePictureFile { get; set; }
+
+            [EmailAddress]
+            public string Email { get; set; }
+
+            [EmailAddress]
+            public string NewEmail { get; set; }
+
+            [DataType(DataType.Password)]
+            public string CurrentPassword { get; set; }
+
+            [DataType(DataType.Password)]
+            public string OldPassword { get; set; }
+
+            [DataType(DataType.Password)]
+            public string NewPassword { get; set; }
+
+            [DataType(DataType.Password)]
+            [Compare("NewPassword", ErrorMessage = "The new password and confirmation password do not match.")]
+            public string ConfirmPassword { get; set; }
         }
 
         private async Task LoadAsync(ApplicationUser user)
@@ -77,6 +96,7 @@ namespace HairMateApp.Areas.Identity.Pages.Account.Manage
 
             Input = new InputModel
             {
+                Email = user.Email,
                 PhoneNumber = phoneNumber,
                 ProfilePicture = user.ProfilePicture,
                 FirstName = user.FirstName,
@@ -128,5 +148,58 @@ namespace HairMateApp.Areas.Identity.Pages.Account.Manage
             StatusMessage = "Your profile has been updated";
             return RedirectToPage();
         }
+        public async Task<IActionResult> OnPostChangeEmailAsync()
+        {
+            if (!ModelState.IsValid)
+            {
+                return Page();
+            }
+
+            var user = await _userManager.GetUserAsync(User);
+            if (user == null)
+            {
+                return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
+            }
+
+            var changeEmailResult = await _userManager.SetEmailAsync(user, Input.NewEmail);
+            if (!changeEmailResult.Succeeded)
+            {
+                foreach (var error in changeEmailResult.Errors)
+                {
+                    ModelState.AddModelError(string.Empty, error.Description);
+                }
+                return Page();
+            }
+
+            return RedirectToPage();
+        }
+
+        public async Task<IActionResult> OnPostChangePasswordAsync()
+        {
+            if (!ModelState.IsValid)
+            {
+                return Page();
+            }
+
+            var user = await _userManager.GetUserAsync(User);
+            if (user == null)
+            {
+                return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
+            }
+
+            var changePasswordResult = await _userManager.ChangePasswordAsync(user, Input.OldPassword, Input.NewPassword);
+            if (!changePasswordResult.Succeeded)
+            {
+                foreach (var error in changePasswordResult.Errors)
+                {
+                    ModelState.AddModelError(string.Empty, error.Description);
+                }
+                return Page();
+            }
+
+            await _signInManager.RefreshSignInAsync(user);
+            return RedirectToPage();
+        }
+
     }
 }

@@ -71,7 +71,7 @@
         <a href="@Url.Action("Edit", "Salon", new { id = Model.SalonId })" class="btn btn-warning mt-3">Edit</a>
     }
 
-    @if (User.IsInRole("admin"))
+    @if (User.IsInRole("Admin"))
     {
         <form asp-action="Delete" method="post" class="mt-3">
             <input type="hidden" name="id" value="@Model.SalonId" />
