@@ -22,3 +22,11 @@ To: Teeest@interia.pl
 Subject: Confirm your email
 Message: Please confirm your account by <a href='https://localhost:7201/?area=Identity&amp;userId=08e1f6a5-2bf8-4ac6-96bf-7fd6b100ae68&amp;code=Q2ZESjhMTHJzZXluNUxSRGtreEdRMVQ4eVVGWW0xbDM4OWZmckFUT3dyVUFpTFQwMDJDVFJaWHBPZkVtUlBpTFRqWHB0RGxNWkpGZHExU1RRTFpZQ0RWSEladXNQOG5oZ3dpUWY3ZTYrMnppUEhDMkNFclV4RDBPZVJPL0J1dGdWejkxcFlUcFZobXBVU245bUVkOENCdzh5a3l6ZHllY2lXbVpPREZxUTJlQThIOG5TN3RxdGZxWThuQysyeUd1SXZrN3pDc0pvYlpjNndCK254UzZIbExKaml2WEpkRUIyTVJLbW9sVnNCL283TkxhbzFyeEl6L3ErNzJJZnN5Tm9iRTA3QT09&amp;returnUrl=%2F&amp;page=%2FAccount%2FConfirmEmail'>clicking here</a>.
 
+To: stachu@interia.pl
+Subject: Confirm your email
+Message: Please confirm your account by <a href='https://localhost:7201/?area=Identity&amp;userId=cc9f78ef-3fdf-4e16-b881-1b0c7ef6f0c9&amp;code=Q2ZESjhMTHJzZXluNUxSRGtreEdRMVQ4eVVHU24vVVBGRGUrOWIrZ0hVU3hCWUZoejU3eTBsd0xkeCtzZ0tYZDQ5eFRVMDdVdTJpck5LMGRlUGt4L2xGQmlHVjVOd3pyQkxIOWY2cWRiVXNvWE1Dc0MzUm1hTi96Sjc1WkdqTWwvWUJ2ZDBaenRmQXZyRC90UUZOL0s1YVpRemRkNFR5eGFLejd5SEdoLytFWEIrMVg5RmFzLzl5TXJROFBnaXNKOTNWTEVrWWY1S2piQ2MvN2x5VWh6VEZXVFVLMlBKcExOeGZPaU5BVHFFK1liSUs5R3ZuU0FuMmhJQXU3TzJOcTAveWdjQT09&amp;returnUrl=%2F&amp;page=%2FAccount%2FConfirmEmail'>clicking here</a>.
+
+To: Admin@interia.pl
+Subject: Confirm your email
+Message: Please confirm your account by <a href='https://localhost:7201/?area=Identity&amp;userId=fe2b6e43-d03f-46f3-81c5-e92372a24d5b&amp;code=Q2ZESjhMTHJzZXluNUxSRGtreEdRMVQ4eVVGMml2dVAxL2RvYlBMUzMyQ29GL1cyTEt1Yi9DVDlOUmJSMHpndTFvZmVGYm13cDdhNEJjSzBZeWhQT3loRFlIWnFJRmNXT255UFFsQ3ZyeUIwNmR3ZzRjVWZlZzVrYmFFUlRCZ3N3am1aeHNWVDhNQjMxSmgzTU4wY1NFR2FjZ1BpaDFaRDBGS3c5ekZ3aWVqNS9kVFFuVHpYUlRxVnhoVmRBVHN3TmVBanV3NlhRQytQc2ZGdnBHdCtGby84c2prTE8wcnpwU0dPclVhMkFPK1F6TmQ1clhsb1JJcGJOL0YreVhFRk9KZytmZz09&amp;returnUrl=%2F&amp;page=%2FAccount%2FConfirmEmail'>clicking here</a>.
+

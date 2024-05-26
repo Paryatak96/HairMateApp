@@ -81,16 +81,31 @@ namespace HairMateApp.Controllers
         [HttpGet]
         public async Task<IActionResult> Create()
         {
+            if (!User.Identity.IsAuthenticated)
+            {
+                return Redirect("https://localhost:7201/Identity/Account/AccessDenied");
+            }
             var user = await _userManager.GetUserAsync(User);
-            ViewBag.FullName = $"{user.FirstName} {user.LastName}";
+            if (user != null)
+            {
+                var roles = await _userManager.GetRolesAsync(user);
+                if (!roles.Contains("Admin") && !roles.Contains("Employee"))
+                {
+                    return Redirect("https://localhost:7201/Identity/Account/AccessDenied");
+                }
+                ViewBag.FullName = $"{user.FirstName} {user.LastName}";
+            }
+            else
+            {
+                return Redirect("https://localhost:7201/Identity/Account/Login");
+            }
             return View(new NewSalonVm());
         }
 
+        [Authorize(Roles = "Admin, Employee")]
         [HttpPost]
         public async Task<IActionResult> Create(NewSalonVm model)
         {
-
-
             if (true)
             {
                 if (model.SalonLogo != null && model.SalonLogo.Length > 0)
@@ -129,7 +144,10 @@ namespace HairMateApp.Controllers
         public async Task<IActionResult> Details(int id)
         {
             var user = await _userManager.GetUserAsync(User);
-            ViewBag.FullName = $"{user.FirstName} {user.LastName}";
+            if (User.Identity.IsAuthenticated)
+            {
+                ViewBag.FullName = $"{user.FirstName} {user.LastName}";
+            }
 
             var salon = await _salonService.GetSalonByIdAsync(id);
             if (salon == null)
@@ -158,7 +176,18 @@ namespace HairMateApp.Controllers
                 Appointments = salon.Appointments ?? new List<Appointment>(),
                 CanEdit = canEdit,
                 CanManage = canManage,
-                AverageRating = (decimal)(salon.Reviews.Any() ? salon.Reviews.Average(r => r.Rating) : 0)
+                AverageRating = salon.Reviews.Any() ? Math.Round((decimal)salon.Reviews.Average(r => r.Rating), 1) : 0
+            };
+            return View(model);
+        }
+
+        [Authorize(Roles = "Employee, Admin")]
+        [HttpGet]
+        public IActionResult AddService(int salonId)
+        {
+            var model = new AddServiceVm
+            {
+                SalonId = salonId
             };
             return View(model);
         }
@@ -196,6 +225,13 @@ namespace HairMateApp.Controllers
                 return Redirect("https://localhost:7201/Identity/Account/Login");
             }
 
+            var isAvailable = await _salonService.IsAppointmentAvailableAsync(salonId, date, time);
+            if (!isAvailable)
+            {
+                return RedirectToAction("AppointmentUnavailable", new { salonId });
+
+            }
+
             var appointment = new Appointment
             {
                 SalonId = salonId,
@@ -208,7 +244,7 @@ namespace HairMateApp.Controllers
             var success = await _salonService.BookAppointmentAsync(appointment);
             if (!success)
             {
-                TempData["Error"] = "The selected appointment is no longer available.";
+                TempData["Error"] = "An error occurred while booking the appointment.";
                 return RedirectToAction("Details", new { id = salonId });
             }
 
@@ -216,10 +252,24 @@ namespace HairMateApp.Controllers
         }
 
         [HttpGet]
+        public IActionResult AppointmentUnavailable(int salonId)
+        {
+            ViewBag.SalonId = salonId;
+            return View();
+        }
+
+        [HttpGet]
         public async Task<IActionResult> BookedAppointments()
         {
             var user = await _userManager.GetUserAsync(User);
-            ViewBag.FullName = $"{user.FirstName} {user.LastName}";
+            if (user != null)
+            {
+                ViewBag.FullName = $"{user.FirstName} {user.LastName}";
+            }
+            else
+            {
+                return Redirect("https://localhost:7201/Identity/Account/Login");
+            }
             var appointments = await _salonService.GetBookedAppointmentsAsync(user.Id);
             return View(appointments);
         }
@@ -264,7 +314,13 @@ namespace HairMateApp.Controllers
         public async Task<IActionResult> AddReview(int salonId)
         {
             var user = await _userManager.GetUserAsync(User);
-            ViewBag.FullName = $"{user.FirstName} {user.LastName}";
+            if (User.Identity.IsAuthenticated)
+            {
+                ViewBag.FullName = $"{user.FirstName} {user.LastName}";
+            }
+
+
+
             var model = new AddReviewVm
             {
                 SalonId = salonId

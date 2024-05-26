@@ -1,5 +1,10 @@
 ﻿@model HairMateApp.Application.ViewModels.Salon.SalonDetailsVm
 
+@if (TempData["Error"] != null)
+{
+    <div class="alert alert-danger">@TempData["Error"]</div>
+}
+
 <div class="salon-details">
     <h1 class="d-flex align-items-center mb-4">
         <img src="@Model.LogoUrl" alt="@Model.Name Logo" class="me-3 logo-large" />
@@ -61,7 +66,17 @@
         </div>
         <div class="form-group mb-3">
             <label for="time">Time:</label>
-            <input type="time" id="time" name="time" class="form-control" required />
+            <select id="time" name="time" class="form-control" required>
+                <option value="08:00">08:00</option>
+                <option value="09:00">09:00</option>
+                <option value="10:00">10:00</option>
+                <option value="11:00">11:00</option>
+                <option value="12:00">12:00</option>
+                <option value="13:00">13:00</option>
+                <option value="14:00">14:00</option>
+                <option value="15:00">15:00</option>
+                <option value="16:00">16:00</option>
+            </select>
         </div>
         <button type="submit" class="btn btn-primary">Book</button>
     </form>
@@ -82,6 +97,11 @@
     @if (User.IsInRole("Employee"))
     {
         <a href="@Url.Action("Appointments", "Salon", new { salonId = Model.SalonId })" class="btn btn-info mt-3">View Appointments</a>
+    }
+
+    @if (User.IsInRole("Employee") || User.IsInRole("Admin"))
+    {
+        <a href="@Url.Action("AddService", "Salon", new { salonId = Model.SalonId })" class="btn btn-primary mt-3">Add Service</a>
     }
 </div>
 

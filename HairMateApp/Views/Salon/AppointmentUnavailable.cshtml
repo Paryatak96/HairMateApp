@@ -1,0 +1,8 @@
+﻿@{
+    ViewData["Title"] = "Appointment Unavailable";
+}
+
+<h1>Appointment Unavailable</h1>
+<p>The selected appointment is no longer available. Please choose a different time.</p>
+
+<a href="@Url.Action("Details", "Salon", new { id = ViewBag.SalonId })" class="btn btn-primary">Back to Salon Details</a>

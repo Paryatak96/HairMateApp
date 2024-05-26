@@ -217,5 +217,10 @@ namespace HairMateApp.Infrastructure.Repository
             _context.Reviews.Add(review);
             return await _context.SaveChangesAsync() > 0;
         }
+        public async Task<bool> IsAppointmentAvailableAsync(int salonId, DateTime date, TimeSpan time)
+        {
+            return !await _context.Appointments
+                .AnyAsync(a => a.SalonId == salonId && a.Date == date && a.Time == time && a.Status == "Booked");
+        }
     }
 }

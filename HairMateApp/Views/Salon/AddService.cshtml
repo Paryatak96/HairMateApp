@@ -1,0 +1,45 @@
+﻿@model HairMateApp.Application.ViewModels.Salon.AddServiceVm
+
+@{
+    ViewData["Title"] = "AddService";
+}
+
+<h1>AddService</h1>
+
+<h4>AddServiceVm</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="AddService">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="SalonId" class="control-label"></label>
+                <input asp-for="SalonId" class="form-control" />
+                <span asp-validation-for="SalonId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Name" class="control-label"></label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Price" class="control-label"></label>
+                <input asp-for="Price" class="form-control" />
+                <span asp-validation-for="Price" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ServiceType" class="control-label"></label>
+                <input asp-for="ServiceType" class="form-control" />
+                <span asp-validation-for="ServiceType" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+

@@ -136,6 +136,7 @@ namespace HairMateApp.Application.Services
 
             await _salonRepository.AddAppointmentsAsync(appointments);
         }
+
         public async Task<bool> BookAppointmentAsync(int appointmentId)
         {
             return await _salonRepository.BookAppointmentAsync(appointmentId);
@@ -155,11 +156,6 @@ namespace HairMateApp.Application.Services
         {
             return await _salonRepository.GetAllSalonsAsync();
         }
-
-
-
-
-
 
         public async Task<IEnumerable<Appointment>> GetBookedAppointmentsAsync(string userId)
         {
@@ -186,10 +182,12 @@ namespace HairMateApp.Application.Services
             // Zakładamy, że metoda CreateAppointmentAsync dodaje nową wizytę do bazy danych
             return await _salonRepository.CreateAppointmentAsync(appointment);
         }
+
         public async Task<bool> AddReviewAsync(Review review)
         {
             return await _salonRepository.AddReviewAsync(review);
         }
+
         public async Task<decimal> GetAverageRatingAsync(int salonId)
         {
             var salon = await _salonRepository.GetSalonByIdAsync(salonId);
@@ -199,6 +197,11 @@ namespace HairMateApp.Application.Services
             }
 
             return (decimal)salon.Reviews.Average(r => r.Rating);
+        }
+
+        public async Task<bool> IsAppointmentAvailableAsync(int salonId, DateTime date, TimeSpan time)
+        {
+            return await _salonRepository.IsAppointmentAvailableAsync(salonId, date, time);
         }
     }
 }

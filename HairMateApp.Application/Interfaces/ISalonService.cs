@@ -40,5 +40,6 @@ namespace HairMateApp.Application.Interfaces
         Task<bool> BookAppointmentAsync(Appointment appointment);
         Task<bool> AddReviewAsync(Review review);
         Task<decimal> GetAverageRatingAsync(int salonId);
+        Task<bool> IsAppointmentAvailableAsync(int salonId, DateTime date, TimeSpan time);
     }
 }

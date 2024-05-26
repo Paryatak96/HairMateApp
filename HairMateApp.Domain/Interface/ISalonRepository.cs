@@ -60,6 +60,7 @@ namespace HairMateApp.Domain.Interface
         Task<bool> CompleteAppointmentAsync(int appointmentId);
         Task<bool> CreateAppointmentAsync(Appointment appointment);
         Task<bool> AddReviewAsync(Review review);
+        Task<bool> IsAppointmentAvailableAsync(int salonId, DateTime date, TimeSpan time);
 
     }
 }

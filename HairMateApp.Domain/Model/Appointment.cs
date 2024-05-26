@@ -17,6 +17,7 @@ namespace HairMateApp.Domain.Model
         public TimeSpan Time { get; set; }
         public string Status { get; set; }
 
+
         public Salon Salon { get; set; }
         public ApplicationUser User { get; set; }
     }
