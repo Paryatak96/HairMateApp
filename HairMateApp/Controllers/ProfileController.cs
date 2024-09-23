@@ -7,12 +7,10 @@ namespace HairMateApp.Controllers
     public class ProfileController : Controller
     {
         private readonly UserManager<ApplicationUser> _userManager;
-        private readonly ISalonService _salonService;
 
-        public ProfileController(UserManager<ApplicationUser> userManager, ISalonService salonService)
+        public ProfileController(UserManager<ApplicationUser> userManager)
         {
             _userManager = userManager;
-            _salonService = salonService;
         }
 
         [HttpGet]
@@ -40,7 +38,7 @@ namespace HairMateApp.Controllers
 
                 if (result.Succeeded)
                 {
-                    return RedirectToAction("Index", "Home"); // Zaktualizuj według potrzeb
+                    return RedirectToAction("Index", "Home");
                 }
             }
             return View();

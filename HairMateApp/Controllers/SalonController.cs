@@ -15,13 +15,11 @@ namespace HairMateApp.Controllers
     public class SalonController : Controller
     {
         private readonly ISalonService _salonService;
-        private readonly ISalonRepository _salonRepository;
         private readonly UserManager<ApplicationUser> _userManager;
 
-        public SalonController(ISalonService salonService, ISalonRepository salonRepository, UserManager<ApplicationUser> userManager)
+        public SalonController(ISalonService salonService, UserManager<ApplicationUser> userManager)
         {
             _salonService = salonService;
-            _salonRepository = salonRepository;
             _userManager = userManager;
         }
 
@@ -102,44 +100,6 @@ namespace HairMateApp.Controllers
             return View(new NewSalonVm());
         }
 
-        [Authorize(Roles = "Admin, Employee")]
-        [HttpPost]
-        public async Task<IActionResult> Create(NewSalonVm model)
-        {
-            if (true)
-            {
-                if (model.SalonLogo != null && model.SalonLogo.Length > 0)
-                {
-                    var filePath = Path.Combine("wwwroot/logos", model.SalonLogo.FileName);
-                    using (var stream = new FileStream(filePath, FileMode.Create))
-                    {
-                        await model.SalonLogo.CopyToAsync(stream);
-                    }
-                    model.LogoUrl = $"/logos/{model.SalonLogo.FileName}";
-                }
-
-                var salon = new Salon
-                {
-                    Name = model.Name,
-                    LogoUrl = model.LogoUrl,
-                    Description = model.Description,
-                    Type = model.Type,
-                    Province = model.Province,
-                    City = model.City,
-                    Street = model.Street,
-                    PostalCode = model.PostalCode,
-                    PaymentType = model.PaymentType,
-                    Services = model.Services,
-                    Reviews = model.Reviews
-                };
-
-                await _salonService.CreateSalonAsync(salon);
-                return RedirectToAction("Index", "Home");
-            }
-
-            return View(model);
-        }
-
         [HttpGet]
         public async Task<IActionResult> Details(int id)
         {
@@ -179,41 +139,6 @@ namespace HairMateApp.Controllers
                 AverageRating = salon.Reviews.Any() ? Math.Round((decimal)salon.Reviews.Average(r => r.Rating), 1) : 0
             };
             return View(model);
-        }
-
-        [Authorize(Roles = "Employee, Admin")]
-        [HttpGet]
-        public IActionResult AddService(int salonId)
-        {
-            var model = new AddServiceVm
-            {
-                SalonId = salonId
-            };
-            return View(model);
-        }
-
-        [Authorize(Roles = "Employee")]
-        [HttpPost]
-        public async Task<IActionResult> AddService(int salonId, string name, decimal price, string serviceType)
-        {
-            var salon = await _salonService.GetSalonByIdAsync(salonId);
-            if (salon == null)
-            {
-                return NotFound();
-            }
-
-            var service = new Service
-            {
-                Name = name,
-                Price = price,
-                ServiceType = serviceType,
-                SalonId = salonId
-            };
-
-            salon.Services.Add(service);
-            await _salonService.UpdateSalonAsync(salon);
-
-            return RedirectToAction("Details", new { id = salonId });
         }
 
         [HttpPost]
@@ -319,8 +244,6 @@ namespace HairMateApp.Controllers
                 ViewBag.FullName = $"{user.FirstName} {user.LastName}";
             }
 
-
-
             var model = new AddReviewVm
             {
                 SalonId = salonId
@@ -348,7 +271,7 @@ namespace HairMateApp.Controllers
                 Rating = model.Rating,
                 Comment = model.Comment,
                 UserId = user.Id,
-                UserName = user.FirstName + " " + user.LastName, // Assuming you have a UserName property
+                UserName = user.FirstName + " " + user.LastName,
             };
 
             var success = await _salonService.AddReviewAsync(review);
@@ -462,6 +385,79 @@ namespace HairMateApp.Controllers
                 SalonName = salon.Name,
                 Appointments = appointments
             };
+
+            return View(model);
+        }
+
+        [Authorize(Roles = "Employee")]
+        [HttpPost]
+        public async Task<IActionResult> AddService(int salonId, string name, decimal price, string serviceType)
+        {
+            var salon = await _salonService.GetSalonByIdAsync(salonId);
+            if (salon == null)
+            {
+                return NotFound();
+            }
+
+            var service = new Service
+            {
+                Name = name,
+                Price = price,
+                ServiceType = serviceType,
+                SalonId = salonId
+            };
+
+            salon.Services.Add(service);
+            await _salonService.UpdateSalonAsync(salon);
+
+            return RedirectToAction("Details", new { id = salonId });
+        }
+
+        [Authorize(Roles = "Employee, Admin")]
+        [HttpGet]
+        public IActionResult AddService(int salonId)
+        {
+            var model = new AddServiceVm
+            {
+                SalonId = salonId
+            };
+            return View(model);
+        }
+
+        [Authorize(Roles = "Employee, Admin")]
+        [HttpPost]
+        public async Task<IActionResult> Create(NewSalonVm model)
+        {
+            if (true)
+            {
+                if (model.SalonLogo != null && model.SalonLogo.Length > 0)
+                {
+                    var filePath = Path.Combine("wwwroot/logos", model.SalonLogo.FileName);
+                    using (var stream = new FileStream(filePath, FileMode.Create))
+                    {
+                        await model.SalonLogo.CopyToAsync(stream);
+                    }
+                    model.LogoUrl = $"/logos/{model.SalonLogo.FileName}";
+                }
+
+                var salon = new Salon
+                {
+                    Name = model.Name,
+                    LogoUrl = model.LogoUrl,
+                    Description = model.Description,
+                    Type = model.Type,
+                    Province = model.Province,
+                    City = model.City,
+                    Street = model.Street,
+                    PostalCode = model.PostalCode,
+                    PaymentType = model.PaymentType,
+                    Services = model.Services,
+                    Reviews = model.Reviews
+                };
+
+                await _salonService.CreateSalonAsync(salon);
+                return RedirectToAction("Index", "Home");
+            }
 
             return View(model);
         }

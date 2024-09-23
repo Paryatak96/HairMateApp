@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using FluentValidation;
 using HairMateApp.Application.Mapping;
 using HairMateApp.Domain.Model;
 using Microsoft.AspNetCore.Http;

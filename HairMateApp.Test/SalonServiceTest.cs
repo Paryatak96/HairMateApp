@@ -46,7 +46,7 @@ public class SalonServiceTests
         _salonService = new SalonService(_salonRepositoryMock.Object, _mapper, context, _userManagerMock.Object);
         _salonServiceMock = new Mock<ISalonService>();
 
-        _controller = new SalonController(_salonServiceMock.Object, _salonRepositoryMock.Object, _userManagerMock.Object)
+        _controller = new SalonController(_salonServiceMock.Object, _userManagerMock.Object)
         {
             ControllerContext = new ControllerContext
             {
